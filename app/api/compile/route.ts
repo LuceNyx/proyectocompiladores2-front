@@ -46,7 +46,9 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const backendUrl = process.env.COMPILER_BACKEND_URL
+  const backendUrl =
+    process.env.COMPILER_BACKEND_URL?.trim() ||
+    (process.env.NODE_ENV === "development" ? "http://127.0.0.1:3001/compile" : "")
   if (backendUrl) {
     try {
       const res = await fetch(backendUrl, {

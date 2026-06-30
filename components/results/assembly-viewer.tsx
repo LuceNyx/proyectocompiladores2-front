@@ -16,7 +16,9 @@ export function AssemblyViewer({
   const [view, setView] = useState<"generated" | "optimized">("optimized")
   const [copied, setCopied] = useState(false)
 
-  const current = view === "optimized" ? optimizedAssembly : assembly
+  const generated = assembly || optimizedAssembly
+  const optimized = optimizedAssembly || assembly
+  const current = view === "optimized" ? optimized : generated
 
   const copy = async () => {
     try {
@@ -38,7 +40,7 @@ export function AssemblyViewer({
     URL.revokeObjectURL(url)
   }
 
-  if (!assembly) {
+  if (!generated && !optimized) {
     return (
       <div className="flex h-full items-center justify-center p-6 text-center text-muted-foreground">
         No se generó assembly. Compila un programa válido.
