@@ -50,17 +50,17 @@ export const EXAMPLES: CodeExample[] = [
     title: "Structs y unions",
     description: "Tipos compuestos y acceso a campos",
     code: `struct Punto {
-  x : i32,
-  y : i32,
+  x : i32;
+  y : i32;
 }
 
 union Valor {
-  entero : i32,
-  flotante : f64,
+  entero : i32;
+  flotante : f64;
 }
 
 pub fn main () void {
-  var p : Punto = undefined;
+  var p = new Punto;
   p.x = 10;
   p.y = 20;
   print(p.x);
@@ -71,7 +71,7 @@ pub fn main () void {
     id: "functions",
     title: "Funciones",
     description: "Funciones públicas y privadas",
-    code: `fn cuadrado (n : i32) i32 {
+    code: `pub fn cuadrado (n : i32) i32 {
   return n * n;
 }
 
