@@ -55,18 +55,35 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({ sourceCode }),
       })
       if (!res.ok) {
-        console.warn(`Backend del compilador respondio con HTTP ${res.status}; se usara el compilador local.`)
-      } else {
-        const data = await res.json()
-        return NextResponse.json(normalizeCompileResult(data, sourceCode), { status: res.status })
+        return NextResponse.json(buildBackendConnectionError(sourceCode, `HTTP ${res.status}`), { status: 200 })
       }
+      const data = await res.json()
+      return NextResponse.json(normalizeCompileResult(data, sourceCode), { status: res.status })
     } catch (err) {
-      console.warn(`No se pudo contactar al backend del compilador: ${(err as Error).message}`)
+      return NextResponse.json(buildBackendConnectionError(sourceCode, (err as Error).message), { status: 200 })
     }
   }
 
   const result = compile(sourceCode)
   return NextResponse.json(result, { status: 200 })
+}
+
+function buildBackendConnectionError(sourceCode: string, reason: string): CompileResult {
+  return {
+    success: false,
+    tokens: [],
+    parseStatus: "Error de conexion",
+    parseSuccess: false,
+    optimizations: { constantFolding: false, cascada: false, sethiUllman: false, peephole: false },
+    optimizationDetails: [],
+    assembly: "",
+    optimizedAssembly: "",
+    ast: null,
+    errors: [`No se pudo contactar al backend configurado: ${reason}`],
+    scannerStatus: "Scanner no ejecutado",
+    scannerSuccess: false,
+    stats: { tokenCount: 0, lineCount: sourceCode.split("\n").length, functionCount: 0 },
+  }
 }
 
 function normalizeCompileResult(data: unknown, sourceCode: string): CompileResult {
