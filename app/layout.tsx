@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Proyecto 2 Compiladores',
+  title: 'Compilador Zig - Proyecto 2',
   description:
     'IDE web para un compilador: scanner, parser, optimización y generación de assembly x86-64.',
   generator: 'v0.app',

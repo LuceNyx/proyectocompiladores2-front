@@ -1,10 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Download, FilePlus2, Loader2, Play, Upload } from "lucide-react"
+import { Download, FilePlus2, Home, Loader2, Play, Upload } from "lucide-react"
 import { useRef } from "react"
 
 interface HeaderProps {
+  onHome: () => void
   onNew: () => void
   onLoadFile: (content: string, fileName: string) => void
   onCompile: () => void
@@ -14,6 +15,7 @@ interface HeaderProps {
 }
 
 export function Header({
+  onHome,
   onNew,
   onLoadFile,
   onCompile,
@@ -42,8 +44,11 @@ export function Header({
         </div>
         <div>
           <h1 className="text-sm font-semibold leading-tight text-foreground sm:text-base">
-            Proyecto 2 Compiladores
+            Compilador Zig - Proyecto 2
           </h1>
+          <p className="hidden text-xs text-primary sm:block">
+            Lenguaje Zig
+          </p>
           <p className="hidden text-xs text-muted-foreground sm:block">
             Scanner, parser, optimización y generación de assembly
           </p>
@@ -58,6 +63,10 @@ export function Header({
           className="hidden"
           onChange={handleFile}
         />
+        <Button variant="ghost" size="sm" onClick={onHome}>
+          <Home />
+          <span className="hidden sm:inline">Inicio</span>
+        </Button>
         <Button variant="ghost" size="sm" onClick={onNew}>
           <FilePlus2 />
           <span className="hidden sm:inline">Nuevo</span>
