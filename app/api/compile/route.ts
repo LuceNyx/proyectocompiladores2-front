@@ -101,7 +101,12 @@ function normalizeCompileResult(data: unknown, sourceCode: string): CompileResul
     optimizations,
     optimizationDetails: normalizeOptimizationDetails(value.optimizationDetails, optimizations),
     assembly: stripStatusLine(asString(value.assembly, "")),
-    optimizedAssembly: stripStatusLine(asString(value.optimizedAssembly, asString(value.assembly, ""))),
+    optimizedAssembly: stripStatusLine(
+      asString(
+        value.optimizedAssembly,
+        asString(value.optimized_assembly, asString(value.assemblyOptimized, asString(value.assemblyOptimizado, ""))),
+      ),
+    ),
     ast: normalizeAst(value.ast),
     errors: normalizeStringArray(value.errors),
     scannerStatus: asString(value.scannerStatus, asBoolean(value.scannerSuccess, false) ? "Correcto" : "Error"),
