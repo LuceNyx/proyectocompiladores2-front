@@ -1,6 +1,6 @@
 "use client"
 
-import type { OptimizationDetail } from "@/lib/compiler/types"
+import type { OptimizationDetail } from "@/lib/compiler-types"
 import { StatusBadge } from "@/components/status-badge"
 import { Layers, Cpu, Calculator, Wrench } from "lucide-react"
 

@@ -1,17 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { compile } from "@/lib/compiler"
-import type { AstNode, CompileResult, OptimizationDetail, OptimizationFlags, Token, TokenCategory } from "@/lib/compiler"
+import type { AstNode, CompileResult, OptimizationDetail, OptimizationFlags, Token, TokenCategory } from "@/lib/compiler-types"
 
 /**
  * POST /api/compile
  *
  * Request:  { "sourceCode": "<source>" }
- * Response: see lib/compiler/types.ts -> CompileResult
+ * Response: see lib/compiler-types.ts -> CompileResult
  *
- * If COMPILER_BACKEND_URL is set, the request is proxied to the real C++
- * compiler backend. Otherwise, a TypeScript reference implementation runs the
- * full pipeline (scanner -> parser -> optimizations -> codegen) so the UI works
- * end-to-end without a backend.
+ * The request is proxied to the real C++ compiler backend. In development, the
+ * default backend is http://127.0.0.1:3001/compile unless COMPILER_BACKEND_URL
+ * overrides it.
  */
 export async function POST(req: NextRequest) {
   let sourceCode = ""
@@ -49,25 +47,24 @@ export async function POST(req: NextRequest) {
   const backendUrl =
     process.env.COMPILER_BACKEND_URL?.trim() ||
     (process.env.NODE_ENV === "development" ? "http://127.0.0.1:3001/compile" : "")
-  if (backendUrl) {
-    try {
-      const res = await fetch(backendUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sourceCode }),
-      })
-      if (!res.ok) {
-        return NextResponse.json(buildBackendConnectionError(sourceCode, `HTTP ${res.status}`), { status: 200 })
-      }
-      const data = await res.json()
-      return NextResponse.json(normalizeCompileResult(data, sourceCode), { status: res.status })
-    } catch (err) {
-      return NextResponse.json(buildBackendConnectionError(sourceCode, (err as Error).message), { status: 200 })
-    }
+  if (!backendUrl) {
+    return NextResponse.json(buildBackendConnectionError(sourceCode, "COMPILER_BACKEND_URL no configurado"), { status: 200 })
   }
 
-  const result = compile(sourceCode)
-  return NextResponse.json(result, { status: 200 })
+  try {
+    const res = await fetch(backendUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sourceCode }),
+    })
+    if (!res.ok) {
+      return NextResponse.json(buildBackendConnectionError(sourceCode, `HTTP ${res.status}`), { status: 200 })
+    }
+    const data = await res.json()
+    return NextResponse.json(normalizeCompileResult(data, sourceCode), { status: res.status })
+  } catch (err) {
+    return NextResponse.json(buildBackendConnectionError(sourceCode, (err as Error).message), { status: 200 })
+  }
 }
 
 function buildBackendConnectionError(sourceCode: string, reason: string): CompileResult {

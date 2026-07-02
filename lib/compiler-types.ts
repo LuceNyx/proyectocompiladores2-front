@@ -14,12 +14,10 @@ export type TokenCategory =
   | "error"
 
 export interface Token {
-  /** Uppercase token type, e.g. VAR, IDENTIFIER, INTEGER */
   type: string
   lexeme: string
   line: number
   column: number
-  /** Broad category used for syntax highlighting */
   category: TokenCategory
 }
 

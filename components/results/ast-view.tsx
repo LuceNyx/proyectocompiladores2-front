@@ -1,6 +1,6 @@
 "use client"
 
-import type { AstNode } from "@/lib/compiler/types"
+import type { AstNode } from "@/lib/compiler-types"
 import { cn } from "@/lib/utils"
 
 const KIND_COLOR: Record<string, string> = {

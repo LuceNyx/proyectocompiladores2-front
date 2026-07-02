@@ -1,6 +1,6 @@
 "use client"
 
-import type { Token } from "@/lib/compiler/types"
+import type { Token } from "@/lib/compiler-types"
 import { StatusBadge } from "@/components/status-badge"
 
 const CATEGORY_COLOR: Record<string, string> = {

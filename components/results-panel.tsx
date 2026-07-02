@@ -1,6 +1,6 @@
 "use client"
 
-import type { CompileResult } from "@/lib/compiler/types"
+import type { CompileResult } from "@/lib/compiler-types"
 import { cn } from "@/lib/utils"
 import { AstView } from "@/components/results/ast-view"
 import { AssemblyViewer } from "@/components/results/assembly-viewer"

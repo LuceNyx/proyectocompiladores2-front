@@ -1,7 +1,7 @@
 "use client"
 
 import { EXAMPLES } from "@/lib/examples"
-import type { CompileResult } from "@/lib/compiler/types"
+import type { CompileResult } from "@/lib/compiler-types"
 import { cn } from "@/lib/utils"
 import { StatusBadge, type StatusVariant } from "@/components/status-badge"
 import { Binary, Boxes, Code2, FileCode2, GitBranch, Sparkles } from "lucide-react"

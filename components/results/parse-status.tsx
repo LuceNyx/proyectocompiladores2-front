@@ -1,6 +1,6 @@
 "use client"
 
-import type { CompileResult } from "@/lib/compiler/types"
+import type { CompileResult } from "@/lib/compiler-types"
 import { StatusBadge } from "@/components/status-badge"
 import { CheckCircle2, XCircle } from "lucide-react"
 
